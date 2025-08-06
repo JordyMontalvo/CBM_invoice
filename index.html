@@ -143,11 +143,10 @@
 <div class="invoicelist-body">
   <table>
     <thead>
-      <th width="60%">Descripción</th>
-      
+      <th width="70%">Descripción</th>
       <th width="10%">Cant.</th>
       <th class="taxrelated">IGV</th>
-      <th width="10%">Total</th>
+      <th width="20%">Total</th>
     </thead>
     <tbody>
       <!-- <tr>
@@ -244,22 +243,23 @@
 
     let total_price = 0
 
-    products.forEach(product => {
+    products.forEach((product, index) => {
       console.log('Processing product:', product)
 
       var newRow = `
       <tr>
-        <td><span>${ product.id }</span></td>
         <td><span>${ product.name }</span></td>
         <td class="amount">${ product.total }</td>
-        <td class="rate">${ product.price }</td>
         <td class="tax taxrelated">${ Number(15 / 100 * product.price).toFixed(2) }</td>
         <td class="sum">${ product.price * product.total }</td>
       </tr>`
 
       $('.invoicelist-body tbody').append(newRow);
 
-      total_price += product.price * product.total
+      // Solo sumar al total si es el primer producto (el plan)
+      if (index === 0) {
+        total_price = product.price * product.total
+      }
     })
 
     $('#total_price').text(total_price.toFixed(2));
