@@ -243,9 +243,17 @@
 
     let total_price = 0
 
-    products.forEach((product, index) => {
-      console.log('Processing product:', product)
+    if (products.length > 0 && products[0].id === '0000') {
+      // Afiliación: solo el precio del plan
+      total_price = products[0].price * products[0].total
+    } else {
+      // Activación: suma de todos los productos
+      products.forEach(product => {
+        total_price += product.price * product.total
+      })
+    }
 
+    products.forEach(product => {
       var newRow = `
       <tr>
         <td><span>${ product.name }</span></td>
@@ -253,20 +261,7 @@
         <td class="tax taxrelated">${ Number(15 / 100 * product.price).toFixed(2) }</td>
         <td class="sum">${ product.price * product.total }</td>
       </tr>`
-
       $('.invoicelist-body tbody').append(newRow);
-
-      // Para afiliaciones: solo el primer producto (plan)
-      // Para activaciones: suma todos los productos
-      if (products.length > 1 && product.id === '0000') {
-        // Es afiliación (tiene plan como primer producto)
-        if (index === 0) {
-          total_price = product.price * product.total
-        }
-      } else {
-        // Es activación (suma todos los productos)
-        total_price += product.price * product.total
-      }
     })
 
     $('#total_price').text(total_price.toFixed(2));
