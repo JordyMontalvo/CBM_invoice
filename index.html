@@ -256,9 +256,16 @@
 
       $('.invoicelist-body tbody').append(newRow);
 
-      // Solo sumar al total si es el primer producto (el plan)
-      if (index === 0) {
-        total_price = product.price * product.total
+      // Para afiliaciones: solo el primer producto (plan)
+      // Para activaciones: suma todos los productos
+      if (products.length > 1 && product.id === '0000') {
+        // Es afiliación (tiene plan como primer producto)
+        if (index === 0) {
+          total_price = product.price * product.total
+        }
+      } else {
+        // Es activación (suma todos los productos)
+        total_price += product.price * product.total
       }
     })
 
