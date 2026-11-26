@@ -274,6 +274,17 @@
 
     $('#id').text(id);
 
+    // Fecha de compra registrada en el pedido (la misma del historial), en hora
+    // local y formato dd/mm/aaaa. Si el servidor no la envía, queda la de hoy.
+    if (data.date) {
+      const d = new Date(data.date)
+      if (!isNaN(d.getTime())) {
+        const dd = String(d.getDate()).padStart(2, '0')
+        const mm = String(d.getMonth() + 1).padStart(2, '0')
+        $('.datePicker').val(`${dd}/${mm}/${d.getFullYear()}`)
+      }
+    }
+
     if (office) {
       $('#office_name').text(office.name);
     }
